@@ -9,7 +9,7 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-    <!-- Custom styles for this template -->
+    <!-- CSS do Site -->
     <link href="tema.css" rel="stylesheet">
 </head>
 
@@ -43,34 +43,31 @@
       <div class="jumbotron">
         <h1></h1>
 
-        <p>Adicione o seu código de rastreio abaixo</p>
+        <p>Adicione o seu código de rastreio CORREIOS/PAC abaixo.</p>
         <form name="codigo" method="post">
 
-        <label>Código de rastreio</label>
+        <label>Código de rastreio:</label>
 
         <!--INPUT QUE USUARIO IRA COLOCAR O COD. DE RASTREIO-->
         <input type="text" name="cod" value="">
-
         <button type="submit" class="btn btn-sm btn-primary" name="rastreia">Rastrear</button>
+        </form> 
 
-        </form>   
       </div>
 
         <!--FORM INPUT E TABLE DO CÓDIGO DE RASTREIO-->
         <?php
-
-
         //Verifica se o usuario clicou no botão de rastrear
         if(isset($_POST['rastreia'])){
 
         //Aqui o script pega o código de rastreio fornecido pelo usuario
         //no metodo POST, pelo INPUT "cod"
         $codRastreio = $_POST['cod'];
-        
+
         //verifica se o campo do código de rastreio está vazio
         if(empty($_POST['cod'])) {
         echo '<div class="alert alert-danger" role="alert">
-        <strong>Opsss!</strong> adicione o código de rastreio.</div>';
+        <strong>Opsss!</strong> Adicione o código de rastreio.</div>';
         //se o campo nao estiver vazio, sera verificado o código e gerado a tabela de dados
         }else{
          //COLOCA COMO DEFINIÇÃO UTF-8 PARA CARACTERES ESPECIAIS
@@ -84,16 +81,13 @@
         <div class="row">
         <div class="col-md-6">
           <table class="table">';
-
-        echo "<thead>
-            <tr>
+        //divisão da tabela
+        echo "<thead><tr>
             <th>Data</th>
             <th>Local</th>
             <th>Ação</th>
             <th>Detalhes</th>
-            </tr>
-            </thead>
-            <tbody>";
+            </tr></thead><tbody>";
         //Aqui o codigo faz um loop de dados se houver mais de uma informação recebida pelo XML dos correios
         foreach ($xml->evento as $rastreio) {
         echo '<tr>';
@@ -111,6 +105,7 @@
 }
 ?>
     </div> <!-- /conteudo -->
+
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <!-- Include all compiled plugins (below), or include individual files as needed -->
