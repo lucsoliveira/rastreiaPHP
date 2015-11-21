@@ -16,12 +16,12 @@
 <body>
     <!--inicio do body-->
      <body role="document">
-    <!-- Fixed navbar -->
+    <!-- Fixed menu -->
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
+            <span class="sr-only">Navegar</span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
@@ -36,8 +36,10 @@
         </div><!--/.nav-collapse -->
       </div>
     </nav>
+    <!--fim do menu-->
+
     <div class="container theme-showcase" role="main">
-      <!-- Main jumbotron for a primary marketing message or call to action -->
+    <!--  -->
       <div class="jumbotron">
         <h1></h1>
 
@@ -53,20 +55,30 @@
 
         </form>   
       </div>
+
         <!--FORM INPUT E TABLE DO CÓDIGO DE RASTREIO-->
         <?php
 
+
         //Verifica se o usuario clicou no botão de rastrear
         if(isset($_POST['rastreia'])){
+
         //Aqui o script pega o código de rastreio fornecido pelo usuario
         //no metodo POST, pelo INPUT "cod"
         $codRastreio = $_POST['cod'];
-        //COLOCA COMO DEFINIÇÃO UTF-8 PARA CARACTERES ESPECIAIS
+        
+        //verifica se o campo do código de rastreio está vazio
+        if(empty($_POST['cod'])) {
+        echo '<div class="alert alert-danger" role="alert">
+        <strong>Opsss!</strong> adicione o código de rastreio.</div>';
+        //se o campo nao estiver vazio, sera verificado o código e gerado a tabela de dados
+        }else{
+         //COLOCA COMO DEFINIÇÃO UTF-8 PARA CARACTERES ESPECIAIS
         ini_set('default_charset', 'UTF-8');
 
         //O SCRIPT TEM COMO BASE O GERADOR DE XML DO SITE AGENCIAIDEIAS, QUE É DISPONIBILIZADO GRATUITAMENTE
         $xml = simplexml_load_file('http://developers.agenciaideias.com.br/correios/rastreamento/xml/'.$codRastreio.'');
-        //Se houver post, o script ira criar uma tabela com dados do rastreio
+        //o script ira criar uma tabela com dados do rastreio
         echo '<h1>Rastreio: '.$codRastreio.'</h1>';
         echo '
         <div class="row">
@@ -95,14 +107,9 @@
         echo "
         </tbody>
         </table>";
-
-        //se ainda nao houve post do código de rastreio, não aparece nada 
-        //aonde ficaria a tabela de dados do rastreio
-        }else{
-
-        }
-
-        ?>
+    }
+}
+?>
     </div> <!-- /conteudo -->
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
