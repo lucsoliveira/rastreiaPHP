@@ -13,7 +13,7 @@
     //se retornar vazio, ira aperecer uma mensagem de erro
     if($xml == ''){
 
-        echo '<div class="alert alert-danger" role="alert"><strong>Opsss!</strong> Código de rastreio com erro ou ainda não foi cadastrado no sistema dos correios.</div>';
+        echo '<div class="alert alert-danger" role="alert"><strong>Opsss!</strong> Código de rastreio com formato incorreto ou ainda não foi cadastrado no sistema dos correios.</div>';
 
     }else{ 
 
