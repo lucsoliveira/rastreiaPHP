@@ -6,7 +6,39 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!--script que pega o código de rastreio -->
+    <script type="text/javascript">                
+        jQuery(document).ready(function(){
+        jQuery('#ajax_form').submit(function(){
+            var dados = jQuery( this ).serialize();
+            jQuery.ajax({
+                type: "POST",
+                url: "rastreia.php",
+                data: dados,
+                success: function( data )
+                {   
+                    //oculta a div do formulario
+                    $( ".solicite" ).fadeOut( "fast");
+                    $( ".carregando" ).fadeIn( "fast");
+                    $( ".carregando" ).fadeOut( "slow");
+                    //exibe a div dos dados
+                    $( ".resultado" ).show( "slow", function showNext() {
+                        $( this ).html(data).show( 4000);
+                    });
+                }
+            });
+            return false;
+        });
+        $(".btn").click(function(e){
+                //oculta a div do formulario            
+                    $( ".alert" ).hide();
+                    $( ".solicite" ).fadeIn( "fast");
+            });
+        });
+    </script>
+
     <!-- Bootstrap -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
     <!-- CSS do Site -->
@@ -44,66 +76,21 @@
         <h1></h1>
 
         <p>Adicione o seu código de rastreio CORREIOS/PAC abaixo.</p>
-        <form name="codigo" method="post">
+        <form name="codigo" method="post" id="ajax_form">
 
         <label>Código de rastreio:</label>
 
         <!--INPUT QUE USUARIO IRA COLOCAR O COD. DE RASTREIO-->
-        <input type="text" name="cod" value="">
+        <input type="text" name="cod" value="" required>
         <button type="submit" class="btn btn-sm btn-primary" name="rastreia">Rastrear</button>
+        <div class="carregando" style="display: none;">Carregando...</div>
         </form> 
 
       </div>
 
-        <!--FORM INPUT E TABLE DO CÓDIGO DE RASTREIO-->
-        <?php
-        //Verifica se o usuario clicou no botão de rastrear
-        if(isset($_POST['rastreia'])){
+        <!--DIV que mostra o resultado via jQuery-->
+        <div class="resultado" style="display: none;"></div>
 
-        //Aqui o script pega o código de rastreio fornecido pelo usuario
-        //no metodo POST, pelo INPUT "cod"
-        $codRastreio = $_POST['cod'];
-
-        //verifica se o campo do código de rastreio está vazio
-        if(empty($_POST['cod'])) {
-        echo '<div class="alert alert-danger" role="alert">
-        <strong>Opsss!</strong> Adicione o código de rastreio.</div>';
-        //se o campo nao estiver vazio, sera verificado o código e gerado a tabela de dados
-        }else{
-         //COLOCA COMO DEFINIÇÃO UTF-8 PARA CARACTERES ESPECIAIS
-        ini_set('default_charset', 'UTF-8');
-
-        //O SCRIPT TEM COMO BASE O GERADOR DE XML DO SITE AGENCIAIDEIAS, QUE É DISPONIBILIZADO GRATUITAMENTE
-        $xml = simplexml_load_file('http://developers.agenciaideias.com.br/correios/rastreamento/xml/'.$codRastreio.'');
-        //o script ira criar uma tabela com dados do rastreio
-        echo '<h1>Rastreio: '.$codRastreio.'</h1>';
-        echo '
-        <div class="row">
-        <div class="col-md-6">
-          <table class="table">';
-        //divisão da tabela
-        echo "<thead><tr>
-            <th>Data</th>
-            <th>Local</th>
-            <th>Ação</th>
-            <th>Detalhes</th>
-            </tr></thead><tbody>";
-        //Aqui o codigo faz um loop de dados se houver mais de uma informação recebida pelo XML dos correios
-        foreach ($xml->evento as $rastreio) {
-        echo '<tr>';
-        echo '<td>'; echo $rastreio->data.'</td>';
-        echo '<td>'; echo $rastreio->local.'</td>';
-        echo '<td>'; echo $rastreio->acao.'</td>';
-        echo '<td>'; echo $rastreio->detalhes.'</td>';
-         echo '</tr>';
-        }
-        //aqui é fechado o loop de dados recebidos
-        echo "
-        </tbody>
-        </table>";
-    }
-}
-?>
     </div> <!-- /conteudo -->
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
